@@ -1,0 +1,1580 @@
+{
+  "cities": [
+    {
+      "id": "13406360",
+      "province": "Islamabad Capital Territory",
+      "name": {
+        "en": "Islamabad",
+        "ur": "اسلام آباد"
+      }
+    },
+    {
+      "id": "1184845",
+      "province": "Punjab",
+      "name": {
+        "en": "Ahmadpur East",
+        "ur": "احمد پور شرقیہ"
+      }
+    },
+    {
+      "id": "11971615",
+      "province": "Punjab",
+      "name": {
+        "en": "Alipur",
+        "ur": "علی پور"
+      }
+    },
+    {
+      "id": "11717780",
+      "province": "Punjab",
+      "name": {
+        "en": "Arifwala",
+        "ur": "عارف والا"
+      }
+    },
+    {
+      "id": "8504972",
+      "province": "Punjab",
+      "name": {
+        "en": "Attock",
+        "ur": "اٹک"
+      }
+    },
+    {
+      "id": "11951078",
+      "province": "Punjab",
+      "name": {
+        "en": "Bhera",
+        "ur": "بھیرہ"
+      }
+    },
+    {
+      "id": "1409466",
+      "province": "Punjab",
+      "name": {
+        "en": "Bhalwal",
+        "ur": "بھلوال"
+      }
+    },
+    {
+      "id": "1332083",
+      "province": "Punjab",
+      "name": {
+        "en": "Bahawalnagar",
+        "ur": "بہاولنگر"
+      }
+    },
+    {
+      "id": "11547367",
+      "province": "Punjab",
+      "name": {
+        "en": "Bahawalpur",
+        "ur": "بہاولپور"
+      }
+    },
+    {
+      "id": "1182815",
+      "province": "Punjab",
+      "name": {
+        "en": "Bhakkar",
+        "ur": "بھکر"
+      }
+    },
+    {
+      "id": "13439653",
+      "province": "Punjab",
+      "name": {
+        "en": "Burewala",
+        "ur": "بورے والا"
+      }
+    },
+    {
+      "id": "13431340",
+      "province": "Punjab",
+      "name": {
+        "en": "Chakwal",
+        "ur": "چکوال"
+      }
+    },
+    {
+      "id": "1181163",
+      "province": "Punjab",
+      "name": {
+        "en": "Chichawatni",
+        "ur": "چیچہ وطنی"
+      }
+    },
+    {
+      "id": "1181096",
+      "province": "Punjab",
+      "name": {
+        "en": "Chiniot",
+        "ur": "چنیوٹ"
+      }
+    },
+    {
+      "id": "1181073",
+      "province": "Punjab",
+      "name": {
+        "en": "Chishtian",
+        "ur": "چشتیاں"
+      }
+    },
+    {
+      "id": "11603397",
+      "province": "Punjab",
+      "name": {
+        "en": "Darya Khan",
+        "ur": "دریا خان"
+      }
+    },
+    {
+      "id": "11631743",
+      "province": "Punjab",
+      "name": {
+        "en": "Dera Ghazi Khan",
+        "ur": "ڈیرہ غازی خان"
+      }
+    },
+    {
+      "id": "1180080",
+      "province": "Punjab",
+      "name": {
+        "en": "Dhaular",
+        "ur": "دھولر"
+      }
+    },
+    {
+      "id": "1179800",
+      "province": "Punjab",
+      "name": {
+        "en": "Dina",
+        "ur": "دینہ"
+      }
+    },
+    {
+      "id": "1410390",
+      "province": "Punjab",
+      "name": {
+        "en": "Dinga",
+        "ur": "ڈنگہ"
+      }
+    },
+    {
+      "id": "1179760",
+      "province": "Punjab",
+      "name": {
+        "en": "Dipalpur",
+        "ur": "دیپالپور"
+      }
+    },
+    {
+      "id": "11726748",
+      "province": "Punjab",
+      "name": {
+        "en": "Faisalabad",
+        "ur": "فیصل آباد"
+      }
+    },
+    {
+      "id": "7329482",
+      "province": "Punjab",
+      "name": {
+        "en": "Gojra",
+        "ur": "گوجرہ"
+      }
+    },
+    {
+      "id": "11464248",
+      "province": "Punjab",
+      "name": {
+        "en": "Gujranwala",
+        "ur": "گوجرانوالہ"
+      }
+    },
+    {
+      "id": "11971603",
+      "province": "Punjab",
+      "name": {
+        "en": "Gujrat",
+        "ur": "گجرات"
+      }
+    },
+    {
+      "id": "1177682",
+      "province": "Punjab",
+      "name": {
+        "en": "Gujar Khan",
+        "ur": "گوجر خان"
+      }
+    },
+    {
+      "id": "11726501",
+      "province": "Punjab",
+      "name": {
+        "en": "Hafizabad",
+        "ur": "حافظ آباد"
+      }
+    },
+    {
+      "id": "1380802",
+      "province": "Punjab",
+      "name": {
+        "en": "Hasilpur",
+        "ur": "حاصل پور"
+      }
+    },
+    {
+      "id": "1176997",
+      "province": "Punjab",
+      "name": {
+        "en": "Haveli Lakha",
+        "ur": "حویلی لکھا"
+      }
+    },
+    {
+      "id": "11117530",
+      "province": "Punjab",
+      "name": {
+        "en": "Jatoi",
+        "ur": "جتوئی"
+      }
+    },
+    {
+      "id": "11482323",
+      "province": "Punjab",
+      "name": {
+        "en": "Jalalpur",
+        "ur": "جلال پور"
+      }
+    },
+    {
+      "id": "11174892",
+      "province": "Punjab",
+      "name": {
+        "en": "Jattan",
+        "ur": "جٹاں"
+      }
+    },
+    {
+      "id": "1401688",
+      "province": "Punjab",
+      "name": {
+        "en": "Jampur",
+        "ur": "جام پور"
+      }
+    },
+    {
+      "id": "7324482",
+      "province": "Punjab",
+      "name": {
+        "en": "Jaranwala",
+        "ur": "جڑانوالہ"
+      }
+    },
+    {
+      "id": "12111268",
+      "province": "Punjab",
+      "name": {
+        "en": "Jhang",
+        "ur": "جھنگ"
+      }
+    },
+    {
+      "id": "1175864",
+      "province": "Punjab",
+      "name": {
+        "en": "Jhelum",
+        "ur": "جہلم"
+      }
+    },
+    {
+      "id": "1175365",
+      "province": "Punjab",
+      "name": {
+        "en": "Kalabagh",
+        "ur": "کالا باغ"
+      }
+    },
+    {
+      "id": "1174625",
+      "province": "Punjab",
+      "name": {
+        "en": "Kasur",
+        "ur": "قصور"
+      }
+    },
+    {
+      "id": "1175156",
+      "province": "Punjab",
+      "name": {
+        "en": "Kamalia",
+        "ur": "کمالیہ"
+      }
+    },
+    {
+      "id": "7465596",
+      "province": "Punjab",
+      "name": {
+        "en": "Kamoke",
+        "ur": "کامونکے"
+      }
+    },
+    {
+      "id": "1388314",
+      "province": "Punjab",
+      "name": {
+        "en": "Khanewal",
+        "ur": "خانیوال"
+      }
+    },
+    {
+      "id": "11689040",
+      "province": "Punjab",
+      "name": {
+        "en": "Khanpur",
+        "ur": "خان پور"
+      }
+    },
+    {
+      "id": "7077227",
+      "province": "Punjab",
+      "name": {
+        "en": "Kharian",
+        "ur": "کھاریاں"
+      }
+    },
+    {
+      "id": "11063974",
+      "province": "Punjab",
+      "name": {
+        "en": "Khushab",
+        "ur": "خوشاب"
+      }
+    },
+    {
+      "id": "1173378",
+      "province": "Punjab",
+      "name": {
+        "en": "Kot Addu",
+        "ur": "کوٹ ادو"
+      }
+    },
+    {
+      "id": "1176022",
+      "province": "Punjab",
+      "name": {
+        "en": "Jauharabad",
+        "ur": "جوہر آباد"
+      }
+    },
+    {
+      "id": "1172451",
+      "province": "Punjab",
+      "name": {
+        "en": "Lahore",
+        "ur": "لاہور"
+      }
+    },
+    {
+      "id": "1172035",
+      "province": "Punjab",
+      "name": {
+        "en": "Layyah",
+        "ur": "لیہ"
+      }
+    },
+    {
+      "id": "1414611",
+      "province": "Punjab",
+      "name": {
+        "en": "Lodhran",
+        "ur": "لودھراں"
+      }
+    },
+    {
+      "id": "1171376",
+      "province": "Punjab",
+      "name": {
+        "en": "Malakwal",
+        "ur": "ملکوال"
+      }
+    },
+    {
+      "id": "7393140",
+      "province": "Punjab",
+      "name": {
+        "en": "Mailsi",
+        "ur": "میلسی"
+      }
+    },
+    {
+      "id": "1171123",
+      "province": "Punjab",
+      "name": {
+        "en": "Mandi Bahauddin",
+        "ur": "منڈی بہاؤالدین"
+      }
+    },
+    {
+      "id": "11488623",
+      "province": "Punjab",
+      "name": {
+        "en": "Mianwali",
+        "ur": "میانوالی"
+      }
+    },
+    {
+      "id": "10999891",
+      "province": "Punjab",
+      "name": {
+        "en": "Multan",
+        "ur": "ملتان"
+      }
+    },
+    {
+      "id": "1169684",
+      "province": "Punjab",
+      "name": {
+        "en": "Murree",
+        "ur": "مری"
+      }
+    },
+    {
+      "id": "1419980",
+      "province": "Punjab",
+      "name": {
+        "en": "Muridke",
+        "ur": "مریدکے"
+      }
+    },
+    {
+      "id": "1169605",
+      "province": "Punjab",
+      "name": {
+        "en": "Muzaffargarh",
+        "ur": "مظفر گڑھ"
+      }
+    },
+    {
+      "id": "1169278",
+      "province": "Punjab",
+      "name": {
+        "en": "Narowal",
+        "ur": "ناروال"
+      }
+    },
+    {
+      "id": "1169372",
+      "province": "Punjab",
+      "name": {
+        "en": "Nankana Sahib",
+        "ur": "نکانہ صاحب"
+      }
+    },
+    {
+      "id": "1168718",
+      "province": "Punjab",
+      "name": {
+        "en": "Okara",
+        "ur": "اوکاڑہ"
+      }
+    },
+    {
+      "id": "1166933",
+      "province": "Punjab",
+      "name": {
+        "en": "Renala Khurd",
+        "ur": "رنالہ خورد"
+      }
+    },
+    {
+      "id": "1168555",
+      "province": "Punjab",
+      "name": {
+        "en": "Pakpattan",
+        "ur": "پاکپتن"
+      }
+    },
+    {
+      "id": "1388145",
+      "province": "Punjab",
+      "name": {
+        "en": "Pattoki",
+        "ur": "پتوکی"
+      }
+    },
+    {
+      "id": "1167873",
+      "province": "Punjab",
+      "name": {
+        "en": "Pir Mahal",
+        "ur": "پیر محل"
+      }
+    },
+    {
+      "id": "11371473",
+      "province": "Punjab",
+      "name": {
+        "en": "Qaimpur",
+        "ur": "قائم پور"
+      }
+    },
+    {
+      "id": "1167569",
+      "province": "Punjab",
+      "name": {
+        "en": "Qila Didar Singh",
+        "ur": "قلعہ دیدار سنگھ"
+      }
+    },
+    {
+      "id": "7329356",
+      "province": "Punjab",
+      "name": {
+        "en": "Rabwah",
+        "ur": "ربوہ"
+      }
+    },
+    {
+      "id": "1167398",
+      "province": "Punjab",
+      "name": {
+        "en": "Raiwind",
+        "ur": "رائے ونڈ"
+      }
+    },
+    {
+      "id": "11369545",
+      "province": "Punjab",
+      "name": {
+        "en": "Rajanpur",
+        "ur": "راجن پور"
+      }
+    },
+    {
+      "id": "1167460",
+      "province": "Punjab",
+      "name": {
+        "en": "Rahim Yar Khan",
+        "ur": "رحیم یار خان"
+      }
+    },
+    {
+      "id": "1166993",
+      "province": "Punjab",
+      "name": {
+        "en": "Rawalpindi",
+        "ur": "راولپنڈی"
+      }
+    },
+    {
+      "id": "11787095",
+      "province": "Punjab",
+      "name": {
+        "en": "Sadiqabad",
+        "ur": "صادق آباد"
+      }
+    },
+    {
+      "id": "11411756",
+      "province": "Punjab",
+      "name": {
+        "en": "Safdarabad",
+        "ur": "صفدر آباد"
+      }
+    },
+    {
+      "id": "11449213",
+      "province": "Punjab",
+      "name": {
+        "en": "Sahiwal",
+        "ur": "ساہیوال"
+      }
+    },
+    {
+      "id": "1166146",
+      "province": "Punjab",
+      "name": {
+        "en": "Sangla Hill",
+        "ur": "سانگلہ ہل"
+      }
+    },
+    {
+      "id": "1166073",
+      "province": "Punjab",
+      "name": {
+        "en": "Sarai Alamgir",
+        "ur": "سرائے عالمگیر"
+      }
+    },
+    {
+      "id": "1166000",
+      "province": "Punjab",
+      "name": {
+        "en": "Sargodha",
+        "ur": "سرگودھا"
+      }
+    },
+    {
+      "id": "1165388",
+      "province": "Punjab",
+      "name": {
+        "en": "Shakargarh",
+        "ur": "شکر گڑھ"
+      }
+    },
+    {
+      "id": "8534009",
+      "province": "Punjab",
+      "name": {
+        "en": "Sheikhupura",
+        "ur": "شیخوپورہ"
+      }
+    },
+    {
+      "id": "1164910",
+      "province": "Punjab",
+      "name": {
+        "en": "Sialkot",
+        "ur": "سیالکوٹ"
+      }
+    },
+    {
+      "id": "7082778",
+      "province": "Punjab",
+      "name": {
+        "en": "Sohawa",
+        "ur": "سوہاوہ"
+      }
+    },
+    {
+      "id": "1164435",
+      "province": "Punjab",
+      "name": {
+        "en": "Soianwala",
+        "ur": "سویاں والا"
+      }
+    },
+    {
+      "id": "1164069",
+      "province": "Punjab",
+      "name": {
+        "en": "Talagang",
+        "ur": "تلہ گنگ"
+      }
+    },
+    {
+      "id": "11785970",
+      "province": "Punjab",
+      "name": {
+        "en": "Taxila",
+        "ur": "ٹیکسلا"
+      }
+    },
+    {
+      "id": "1163272",
+      "province": "Punjab",
+      "name": {
+        "en": "Toba Tek Singh",
+        "ur": "ٹوبہ ٹیک سنگھ"
+      }
+    },
+    {
+      "id": "11783168",
+      "province": "Punjab",
+      "name": {
+        "en": "Wazirabad",
+        "ur": "وزیر آباد"
+      }
+    },
+    {
+      "id": "1184055",
+      "province": "Sindh",
+      "name": {
+        "en": "Badin",
+        "ur": "بدین"
+      }
+    },
+    {
+      "id": "1167342",
+      "province": "Sindh",
+      "name": {
+        "en": "Rajo Khanani",
+        "ur": "راجو خانانی"
+      }
+    },
+    {
+      "id": "13436557",
+      "province": "Sindh",
+      "name": {
+        "en": "Chak",
+        "ur": "چک"
+      }
+    },
+    {
+      "id": "11339124",
+      "province": "Sindh",
+      "name": {
+        "en": "Dadu",
+        "ur": "دادو"
+      }
+    },
+    {
+      "id": "1179837",
+      "province": "Sindh",
+      "name": {
+        "en": "Digri",
+        "ur": "ڈگری"
+      }
+    },
+    {
+      "id": "1179758",
+      "province": "Sindh",
+      "name": {
+        "en": "Diplo",
+        "ur": "ڈپلو"
+      }
+    },
+    {
+      "id": "1368821",
+      "province": "Sindh",
+      "name": {
+        "en": "Dokri",
+        "ur": "ڈوکری"
+      }
+    },
+    {
+      "id": "1178456",
+      "province": "Sindh",
+      "name": {
+        "en": "Ghotki",
+        "ur": "گھوٹکی"
+      }
+    },
+    {
+      "id": "11452300",
+      "province": "Sindh",
+      "name": {
+        "en": "Hyderabad",
+        "ur": "حیدرآباد"
+      }
+    },
+    {
+      "id": "1176608",
+      "province": "Sindh",
+      "name": {
+        "en": "Islamkot",
+        "ur": "اسلام کوٹ"
+      }
+    },
+    {
+      "id": "1176515",
+      "province": "Sindh",
+      "name": {
+        "en": "Jacobabad",
+        "ur": "جیکب آباد"
+      }
+    },
+    {
+      "id": "1176229",
+      "province": "Sindh",
+      "name": {
+        "en": "Jamshoro",
+        "ur": "جامشورو"
+      }
+    },
+    {
+      "id": "1175021",
+      "province": "Sindh",
+      "name": {
+        "en": "Kandhkot",
+        "ur": "کاندھ کوٹ"
+      }
+    },
+    {
+      "id": "1175010",
+      "province": "Sindh",
+      "name": {
+        "en": "Kandiaro",
+        "ur": "کنڈیارو"
+      }
+    },
+    {
+      "id": "1174872",
+      "province": "Sindh",
+      "name": {
+        "en": "Karachi",
+        "ur": "کراچی"
+      }
+    },
+    {
+      "id": "1174451",
+      "province": "Sindh",
+      "name": {
+        "en": "Keti Bandar",
+        "ur": "کیٹی بندر"
+      }
+    },
+    {
+      "id": "11785935",
+      "province": "Sindh",
+      "name": {
+        "en": "Khairpur",
+        "ur": "خیرپور"
+      }
+    },
+    {
+      "id": "1447537",
+      "province": "Sindh",
+      "name": {
+        "en": "Kotri",
+        "ur": "کوٹری"
+      }
+    },
+    {
+      "id": "1172128",
+      "province": "Sindh",
+      "name": {
+        "en": "Larkana",
+        "ur": "لاڑکانہ"
+      }
+    },
+    {
+      "id": "1170677",
+      "province": "Sindh",
+      "name": {
+        "en": "Matiari",
+        "ur": "مٹیاری"
+      }
+    },
+    {
+      "id": "10986054",
+      "province": "Sindh",
+      "name": {
+        "en": "Mehar",
+        "ur": "میہڑ"
+      }
+    },
+    {
+      "id": "1170295",
+      "province": "Sindh",
+      "name": {
+        "en": "Mirpur Khas",
+        "ur": "میرپور خاص"
+      }
+    },
+    {
+      "id": "1170229",
+      "province": "Sindh",
+      "name": {
+        "en": "Mithani",
+        "ur": "مٹھانی"
+      }
+    },
+    {
+      "id": "11028077",
+      "province": "Sindh",
+      "name": {
+        "en": "Mithi",
+        "ur": "مٹھی"
+      }
+    },
+    {
+      "id": "11254774",
+      "province": "Sindh",
+      "name": {
+        "en": "Mehrabpur",
+        "ur": "محراب پور"
+      }
+    },
+    {
+      "id": "11418469",
+      "province": "Sindh",
+      "name": {
+        "en": "Moro",
+        "ur": "مورو"
+      }
+    },
+    {
+      "id": "1169187",
+      "province": "Sindh",
+      "name": {
+        "en": "Naudero",
+        "ur": "نوڈیرو"
+      }
+    },
+    {
+      "id": "1169116",
+      "province": "Sindh",
+      "name": {
+        "en": "Nawabshah",
+        "ur": "نواب شاہ"
+      }
+    },
+    {
+      "id": "11546869",
+      "province": "Sindh",
+      "name": {
+        "en": "Nazimabad",
+        "ur": "ناظم آباد"
+      }
+    },
+    {
+      "id": "1390818",
+      "province": "Sindh",
+      "name": {
+        "en": "Qambar",
+        "ur": "قنبر"
+      }
+    },
+    {
+      "id": "12524473",
+      "province": "Sindh",
+      "name": {
+        "en": "Qasimabad",
+        "ur": "قاسم آباد"
+      }
+    },
+    {
+      "id": "1331303",
+      "province": "Sindh",
+      "name": {
+        "en": "Ranipur",
+        "ur": "رانی پور"
+      }
+    },
+    {
+      "id": "1167031",
+      "province": "Sindh",
+      "name": {
+        "en": "Ratodero",
+        "ur": "رتوڈیرو"
+      }
+    },
+    {
+      "id": "10433178",
+      "province": "Sindh",
+      "name": {
+        "en": "Rohri",
+        "ur": "روہڑی"
+      }
+    },
+    {
+      "id": "1166381",
+      "province": "Sindh",
+      "name": {
+        "en": "Sakrand",
+        "ur": "سکرنڈ"
+      }
+    },
+    {
+      "id": "1377316",
+      "province": "Sindh",
+      "name": {
+        "en": "Sanghar",
+        "ur": "سانگھڑ"
+      }
+    },
+    {
+      "id": "1165666",
+      "province": "Sindh",
+      "name": {
+        "en": "Shahbandar",
+        "ur": "شاہ بندر"
+      }
+    },
+    {
+      "id": "1165635",
+      "province": "Sindh",
+      "name": {
+        "en": "Shahdadpur",
+        "ur": "شہداد پور"
+      }
+    },
+    {
+      "id": "1165507",
+      "province": "Sindh",
+      "name": {
+        "en": "Shahpur Chakar",
+        "ur": "شاہ پور چاکر"
+      }
+    },
+    {
+      "id": "1164408",
+      "province": "Sindh",
+      "name": {
+        "en": "Sukkur",
+        "ur": "سکھر"
+      }
+    },
+    {
+      "id": "13439488",
+      "province": "Sindh",
+      "name": {
+        "en": "Tangwani",
+        "ur": "تنگوانی"
+      }
+    },
+    {
+      "id": "1163965",
+      "province": "Sindh",
+      "name": {
+        "en": "Tando Allahyar",
+        "ur": "ٹنڈو اللہ یار"
+      }
+    },
+    {
+      "id": "1163952",
+      "province": "Sindh",
+      "name": {
+        "en": "Tando Muhammad Khan",
+        "ur": "ٹنڈو محمد خان"
+      }
+    },
+    {
+      "id": "13439571",
+      "province": "Sindh",
+      "name": {
+        "en": "Thatta",
+        "ur": "ٹھٹھہ"
+      }
+    },
+    {
+      "id": "1355025",
+      "province": "Sindh",
+      "name": {
+        "en": "Umerkot",
+        "ur": "عمر کوٹ"
+      }
+    },
+    {
+      "id": "1405149",
+      "province": "Sindh",
+      "name": {
+        "en": "Warah",
+        "ur": "وارہ"
+      }
+    },
+    {
+      "id": "1185056",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Abbottabad",
+        "ur": "ایبٹ آباد"
+      }
+    },
+    {
+      "id": "1184970",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Adezai",
+        "ur": "ادیزئی"
+      }
+    },
+    {
+      "id": "8985990",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Alpuri",
+        "ur": "الپوری"
+      }
+    },
+    {
+      "id": "1184752",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Akora Khattak",
+        "ur": "اکوڑہ خٹک"
+      }
+    },
+    {
+      "id": "10988777",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Ayubia",
+        "ur": "ایوبیہ"
+      }
+    },
+    {
+      "id": "1183539",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Banda Daud Shah",
+        "ur": "بانڈہ داؤد شاہ"
+      }
+    },
+    {
+      "id": "1183460",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Bannu",
+        "ur": "بنو"
+      }
+    },
+    {
+      "id": "1183105",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Battagram",
+        "ur": "بٹگرام"
+      }
+    },
+    {
+      "id": "10951963",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Charsadda",
+        "ur": "چار سدہ"
+      }
+    },
+    {
+      "id": "1333110",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Chitral",
+        "ur": "چترال"
+      }
+    },
+    {
+      "id": "11420511",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Daggar",
+        "ur": "ڈگر"
+      }
+    },
+    {
+      "id": "11337059",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Dargai",
+        "ur": "درگئی"
+      }
+    },
+    {
+      "id": "11603397",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Darya Khan",
+        "ur": "دریا خان"
+      }
+    },
+    {
+      "id": "1180281",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Dera Ismail Khan",
+        "ur": "ڈیرہ اسماعیل خان"
+      }
+    },
+    {
+      "id": "11466350",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Doaba",
+        "ur": "دوآبہ"
+      }
+    },
+    {
+      "id": "11466446",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Dir",
+        "ur": "دیر"
+      }
+    },
+    {
+      "id": "1179552",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Drosh",
+        "ur": "دروش"
+      }
+    },
+    {
+      "id": "1177203",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Hangu",
+        "ur": "ہنگو"
+      }
+    },
+    {
+      "id": "11543639",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Haripur",
+        "ur": "ہری پور"
+      }
+    },
+    {
+      "id": "1420647",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Karak",
+        "ur": "کرک"
+      }
+    },
+    {
+      "id": "1173491",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Kohat",
+        "ur": "کوہاٹ"
+      }
+    },
+    {
+      "id": "7068355",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Kulachi",
+        "ur": "کلاچی"
+      }
+    },
+    {
+      "id": "1180912",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Madyan",
+        "ur": "مدین"
+      }
+    },
+    {
+      "id": "10988296",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Mansehra",
+        "ur": "مانسہرہ"
+      }
+    },
+    {
+      "id": "11782498",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Mardan",
+        "ur": "مردان"
+      }
+    },
+    {
+      "id": "1170709",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Mastuj",
+        "ur": "مستوج"
+      }
+    },
+    {
+      "id": "1170395",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Mingora",
+        "ur": "مینگورہ"
+      }
+    },
+    {
+      "id": "11773827",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Nowshera",
+        "ur": "نوشہرہ"
+      }
+    },
+    {
+      "id": "11732018",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Paharpur",
+        "ur": "پہاڑ پور"
+      }
+    },
+    {
+      "id": "1168680",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Pabbi",
+        "ur": "پبی"
+      }
+    },
+    {
+      "id": "1168197",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Peshawar",
+        "ur": "پشاور"
+      }
+    },
+    {
+      "id": "1166475",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Saidu Sharif",
+        "ur": "سیدو شریف"
+      }
+    },
+    {
+      "id": "13435604",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Shorkot",
+        "ur": "شورکوٹ"
+      }
+    },
+    {
+      "id": "11415498",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Shewa Adda",
+        "ur": "شیوا اڈہ"
+      }
+    },
+    {
+      "id": "1164216",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Swabi",
+        "ur": "صوابی"
+      }
+    },
+    {
+      "id": "1477784",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Swat",
+        "ur": "سوات"
+      }
+    },
+    {
+      "id": "6273604",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Tangi",
+        "ur": "تنگی"
+      }
+    },
+    {
+      "id": "1163906",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Tank",
+        "ur": "ٹانک"
+      }
+    },
+    {
+      "id": "1163198",
+      "province": "Khyber Pakhtunkhwa",
+      "name": {
+        "en": "Tordher",
+        "ur": "تورڈھیر"
+      }
+    },
+    {
+      "id": "1184205",
+      "province": "Balochistan",
+      "name": {
+        "en": "Awaran",
+        "ur": "آواران"
+      }
+    },
+    {
+      "id": "1478751",
+      "province": "Balochistan",
+      "name": {
+        "en": "Barkhan",
+        "ur": "بارکھان"
+      }
+    },
+    {
+      "id": "1181953",
+      "province": "Balochistan",
+      "name": {
+        "en": "Chagai",
+        "ur": "چاغی"
+      }
+    },
+    {
+      "id": "1180295",
+      "province": "Balochistan",
+      "name": {
+        "en": "Dera Bugti",
+        "ur": "ڈیرہ بگٹی"
+      }
+    },
+    {
+      "id": "1177446",
+      "province": "Balochistan",
+      "name": {
+        "en": "Gwadar",
+        "ur": "گوادر"
+      }
+    },
+    {
+      "id": "1177098",
+      "province": "Balochistan",
+      "name": {
+        "en": "Harnai",
+        "ur": "ہرنائی"
+      }
+    },
+    {
+      "id": "11539911",
+      "province": "Balochistan",
+      "name": {
+        "en": "Jafarabad",
+        "ur": "جعفر آباد"
+      }
+    },
+    {
+      "id": "1175966",
+      "province": "Balochistan",
+      "name": {
+        "en": "Jhal Magsi",
+        "ur": "جھل مگسی"
+      }
+    },
+    {
+      "id": "1446822",
+      "province": "Balochistan",
+      "name": {
+        "en": "Kalat",
+        "ur": "قلات"
+      }
+    },
+    {
+      "id": "1174488",
+      "province": "Balochistan",
+      "name": {
+        "en": "Kech",
+        "ur": "کیچ"
+      }
+    },
+    {
+      "id": "1478893",
+      "province": "Balochistan",
+      "name": {
+        "en": "Kharan",
+        "ur": "خاران"
+      }
+    },
+    {
+      "id": "1173664",
+      "province": "Balochistan",
+      "name": {
+        "en": "Khuzdar",
+        "ur": "خضدار"
+      }
+    },
+    {
+      "id": "1173464",
+      "province": "Balochistan",
+      "name": {
+        "en": "Kohlu",
+        "ur": "کوہلو"
+      }
+    },
+    {
+      "id": "11442449",
+      "province": "Balochistan",
+      "name": {
+        "en": "Lehri",
+        "ur": "لہڑی"
+      }
+    },
+    {
+      "id": "1171868",
+      "province": "Balochistan",
+      "name": {
+        "en": "Loralai",
+        "ur": "لورالائی"
+      }
+    },
+    {
+      "id": "1170706",
+      "province": "Balochistan",
+      "name": {
+        "en": "Mastung",
+        "ur": "مستونگ"
+      }
+    },
+    {
+      "id": "13440269",
+      "province": "Balochistan",
+      "name": {
+        "en": "Nasirabad",
+        "ur": "نصیر آباد"
+      }
+    },
+    {
+      "id": "7565535",
+      "province": "Balochistan",
+      "name": {
+        "en": "Nushki",
+        "ur": "نوشکی"
+      }
+    },
+    {
+      "id": "1168446",
+      "province": "Balochistan",
+      "name": {
+        "en": "Panjgur",
+        "ur": "پنجگور"
+      }
+    },
+    {
+      "id": "1167528",
+      "province": "Balochistan",
+      "name": {
+        "en": "Quetta",
+        "ur": "کوئٹہ"
+      }
+    },
+    {
+      "id": "11232745",
+      "province": "Balochistan",
+      "name": {
+        "en": "Sherani",
+        "ur": "شیرانی"
+      }
+    },
+    {
+      "id": "1164896",
+      "province": "Balochistan",
+      "name": {
+        "en": "Sibi",
+        "ur": "سبی"
+      }
+    },
+    {
+      "id": "1164660",
+      "province": "Balochistan",
+      "name": {
+        "en": "Sohbatpur",
+        "ur": "صحبت پور"
+      }
+    },
+    {
+      "id": "1162500",
+      "province": "Balochistan",
+      "name": {
+        "en": "Washuk",
+        "ur": "واشک"
+      }
+    },
+    {
+      "id": "1162105",
+      "province": "Balochistan",
+      "name": {
+        "en": "Zhob",
+        "ur": "ژوب"
+      }
+    },
+    {
+      "id": "11535247",
+      "province": "Balochistan",
+      "name": {
+        "en": "Ziarat",
+        "ur": "زیارت"
+      }
+    }
+  ]
+}

@@ -1,150 +1,148 @@
-import { supabase, isSupabaseConfigured } from './supabase';
-import { 
-  mockStats, 
-  mockBloodRequests, 
-  mockDonors, 
-  mockDonations 
-} from './mockData';
-import { BloodRequest, DonorProfile, DonationRecord, DashboardStats, RequestStatus } from './types';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
-// In-memory state for local mock mutation
-let localBloodRequests = [...mockBloodRequests];
-let localDonors = [...mockDonors];
-
-export async function getDashboardStats(): Promise<DashboardStats> {
-  if (!isSupabaseConfigured || !supabase) {
-    return mockStats;
-  }
-
+function getAuthToken(): string | null {
+  if (typeof window === "undefined") return null;
   try {
-    const [
-      { count: usersCount },
-      { count: donorsCount },
-      { count: activeReqCount },
-      { count: criticalReqCount },
-      { count: fulfilledCount }
-    ] = await Promise.all([
-      supabase.from('profiles').select('*', { count: 'exact', head: true }),
-      supabase.from('profiles').select('*', { count: 'exact', head: true }).eq('is_available', true),
-      supabase.from('blood_requests').select('*', { count: 'exact', head: true }).in('status', ['OPEN', 'IN_PROGRESS']),
-      supabase.from('blood_requests').select('*', { count: 'exact', head: true }).eq('urgency', 'CRITICAL').in('status', ['OPEN', 'IN_PROGRESS']),
-      supabase.from('donations').select('*', { count: 'exact', head: true }).eq('status', 'COMPLETED')
-    ]);
+    const stored = localStorage.getItem("lifelink_admin_session");
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      return parsed?.session?.access_token || null;
+    }
+  } catch {
+    // ignore
+  }
+  return null;
+}
 
-    return {
-      totalUsers: usersCount || mockStats.totalUsers,
-      totalDonors: donorsCount || mockStats.totalDonors,
-      activeRequests: activeReqCount || mockStats.activeRequests,
-      criticalRequests: criticalReqCount || mockStats.criticalRequests,
-      fulfilledDonations: fulfilledCount || mockStats.fulfilledDonations,
-      livesSaved: Math.round((fulfilledCount || mockStats.fulfilledDonations) * 1.5),
+export async function fetchFromApi<T>(
+  endpoint: string,
+  options?: RequestInit
+): Promise<{ success: boolean; data?: T; error?: string }> {
+  try {
+    const token = getAuthToken();
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+      ...(options?.headers as Record<string, string> || {}),
     };
-  } catch (error) {
-    console.warn('Falling back to mock stats due to:', error);
-    return mockStats;
-  }
-}
 
-export async function getBloodRequests(): Promise<BloodRequest[]> {
-  if (!isSupabaseConfigured || !supabase) {
-    return localBloodRequests;
-  }
-
-  try {
-    const { data, error } = await supabase
-      .from('blood_requests')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error || !data || data.length === 0) {
-      return localBloodRequests;
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
     }
 
-    return data as BloodRequest[];
-  } catch {
-    return localBloodRequests;
-  }
-}
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+      headers,
+      ...options,
+      cache: "no-store",
+    });
 
-export async function updateBloodRequestStatus(id: string, status: RequestStatus): Promise<boolean> {
-  if (!isSupabaseConfigured || !supabase) {
-    localBloodRequests = localBloodRequests.map((req) => 
-      req.id === id ? { ...req, status, updated_at: new Date().toISOString() } : req
-    );
-    return true;
-  }
-
-  try {
-    const { error } = await supabase
-      .from('blood_requests')
-      .update({ status, updated_at: new Date().toISOString() })
-      .eq('id', id);
-
-    return !error;
-  } catch {
-    return false;
-  }
-}
-
-export async function getDonors(): Promise<DonorProfile[]> {
-  if (!isSupabaseConfigured || !supabase) {
-    return localDonors;
-  }
-
-  try {
-    const { data, error } = await supabase
-      .from('profiles')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    if (error || !data || data.length === 0) {
-      return localDonors;
+    if (res.status === 401 || res.status === 403) {
+      // Token expired or not admin — clear session and redirect
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("lifelink_admin_session");
+        window.location.href = "/login";
+      }
+      return { success: false, error: "Session expired. Please login again." };
     }
 
-    return data as DonorProfile[];
-  } catch {
-    return localDonors;
-  }
-}
-
-export async function toggleDonorAvailability(id: string): Promise<boolean> {
-  if (!isSupabaseConfigured || !supabase) {
-    localDonors = localDonors.map((d) => 
-      d.id === id ? { ...d, is_available: !d.is_available } : d
-    );
-    return true;
-  }
-
-  try {
-    const donor = localDonors.find(d => d.id === id);
-    const { error } = await supabase
-      .from('profiles')
-      .update({ is_available: !donor?.is_available })
-      .eq('id', id);
-
-    return !error;
-  } catch {
-    return false;
-  }
-}
-
-export async function getDonations(): Promise<DonationRecord[]> {
-  if (!isSupabaseConfigured || !supabase) {
-    return mockDonations;
-  }
-
-  try {
-    const { data, error } = await supabase
-      .from('donations')
-      .select('*')
-      .order('donated_at', { ascending: false });
-
-    if (error || !data || data.length === 0) {
-      return mockDonations;
+    if (!res.ok) {
+      const errorData = await res.json().catch(() => ({}));
+      return { success: false, error: errorData.message || `HTTP ${res.status}` };
     }
 
-    return data as DonationRecord[];
-  } catch {
-    return mockDonations;
+    const json = await res.json();
+    return { success: true, data: json.data || json };
+  } catch (err: any) {
+    return { success: false, error: err.message || "Failed to connect to backend" };
   }
 }
+
+export const api = {
+  // Blood Requests Feed
+  getFeed: async (params?: {
+    blood_group?: string;
+    urgency?: string;
+    page?: number;
+    limit?: number;
+    search?: string;
+  }) => {
+    const query = new URLSearchParams();
+    if (params?.blood_group && params.blood_group !== "all")
+      query.set("blood_group", params.blood_group);
+    if (params?.urgency && params.urgency !== "all")
+      query.set("urgency", params.urgency);
+    if (params?.page) query.set("page", String(params.page));
+    if (params?.limit) query.set("limit", String(params.limit || 20));
+    if (params?.search) query.set("search", params.search);
+
+    const qs = query.toString();
+    return fetchFromApi<any>(`/blood-requests/feed${qs ? `?${qs}` : ""}`);
+  },
+
+  // Urgent Requests
+  getUrgentRequests: async (limit: number = 6) => {
+    return fetchFromApi<any[]>(`/blood-requests/urgent?limit=${limit}`);
+  },
+
+  // Single Request Details
+  getRequestDetails: async (id: string) => {
+    return fetchFromApi<any>(`/blood-requests/${id}`);
+  },
+
+  // Update Request Status
+  updateRequestStatus: async (id: string, status: string) => {
+    return fetchFromApi<any>(`/blood-requests/${id}/status`, {
+      method: "PATCH",
+      body: JSON.stringify({ status }),
+    });
+  },
+
+  // Support FAQs
+  
+  // Moderation & Reports Center
+  getReports: async (params?: {
+    status?: string;
+    target_type?: string;
+    priority?: string;
+    search?: string;
+    page?: number;
+    limit?: number;
+  }) => {
+    const query = new URLSearchParams();
+    if (params?.status && params.status !== "all") query.set("status", params.status);
+    if (params?.target_type && params.target_type !== "all") query.set("target_type", params.target_type);
+    if (params?.priority && params.priority !== "all") query.set("priority", params.priority);
+    if (params?.search) query.set("search", params.search);
+    if (params?.page) query.set("page", String(params.page));
+    if (params?.limit) query.set("limit", String(params.limit));
+    const qs = query.toString();
+    return fetchFromApi<any>(`/support/reports${qs ? "?" + qs : ""}`);
+  },
+
+  getReportStats: async () => {
+    return fetchFromApi<any>("/support/stats");
+  },
+
+  takeReportAction: async (
+    id: string,
+    body: { action_taken: string; admin_notes?: string; status?: string }
+  ) => {
+    return fetchFromApi<any>(`/support/reports/${id}/action`, {
+      method: "PATCH",
+      body: JSON.stringify(body),
+    });
+  },
+
+  // Emergency Broadcast Alerts
+  sendBroadcast: async (payload: {
+    title: string;
+    message: string;
+    city?: string;
+    blood_group?: string;
+    urgency?: string;
+  }) => {
+    return fetchFromApi<any>("/dashboard/broadcast", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+  },
+};
