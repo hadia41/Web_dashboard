@@ -16,7 +16,7 @@ function getAuthToken(): string | null {
 
 export async function fetchFromApi<T>(
   endpoint: string,
-  options?: RequestInit
+  options?: RequestInit & { skipAuthRedirect?: boolean }
 ): Promise<{ success: boolean; data?: T; error?: string }> {
   try {
     const token = getAuthToken();
@@ -29,19 +29,27 @@ export async function fetchFromApi<T>(
       headers["Authorization"] = `Bearer ${token}`;
     }
 
+    const { skipAuthRedirect, ...fetchOptions } = options || {};
+
     const res = await fetch(`${API_BASE_URL}${endpoint}`, {
       headers,
-      ...options,
+      ...fetchOptions,
       cache: "no-store",
     });
 
-    if (res.status === 401 || res.status === 403) {
-      // Token expired or not admin — clear session and redirect
-      if (typeof window !== "undefined") {
-        localStorage.removeItem("lifelink_admin_session");
-        window.location.href = "/login";
+    if (res.status === 401) {
+      if (!skipAuthRedirect) {
+        // Token expired or not authenticated — clear session and redirect
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("lifelink_admin_session");
+          window.location.href = "/login";
+        }
       }
-      return { success: false, error: "Session expired. Please login again." };
+      return { success: false, error: "Unauthorized" };
+    }
+
+    if (res.status === 403) {
+      return { success: false, error: "Forbidden: insufficient permissions" };
     }
 
     if (!res.ok) {
@@ -83,9 +91,26 @@ export const api = {
     return fetchFromApi<any[]>(`/blood-requests/urgent?limit=${limit}`);
   },
 
+  // Overview Dashboard Statistics
+  getDashboardStats: async () => {
+    return fetchFromApi<{
+      total_donors: number;
+      active_requests: number;
+      critical_requests: number;
+      fulfilled_donations: number;
+      lives_saved: number;
+      response_time_avg: string;
+    }>("/dashboard/stats");
+  },
+
   // Single Request Details
   getRequestDetails: async (id: string) => {
     return fetchFromApi<any>(`/blood-requests/${id}`);
+  },
+
+  // Get donations/donors for a specific request (may 401 for admin — don't logout)
+  getDonationsForRequest: async (requestId: string) => {
+    return fetchFromApi<any>(`/donations/request/${requestId}`, { skipAuthRedirect: true });
   },
 
   // Update Request Status

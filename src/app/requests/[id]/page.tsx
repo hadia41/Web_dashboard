@@ -20,6 +20,7 @@ import {
   Clock,
   Calendar,
   User,
+  Users,
   ShieldCheck,
   Droplet,
   HeartHandshake,
@@ -58,6 +59,7 @@ export default function BloodRequestDetailPage({
 
   const [loading, setLoading] = useState(true);
   const [request, setRequest] = useState<any | null>(null);
+  const [donations, setDonations] = useState<any[]>([]);
   const [copiedId, setCopiedId] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [statusFeedback, setStatusFeedback] = useState<string | null>(null);
@@ -65,11 +67,22 @@ export default function BloodRequestDetailPage({
   const fetchDetails = async () => {
     setLoading(true);
     try {
-      const res = await api.getRequestDetails(id);
-      if (res.success && res.data) {
-        setRequest(res.data);
+      const [detailRes, donationsRes] = await Promise.all([
+        api.getRequestDetails(id),
+        api.getDonationsForRequest(id),
+      ]);
+
+      if (detailRes.success && detailRes.data) {
+        setRequest(detailRes.data);
       } else {
         setRequest(null);
+      }
+
+      if (donationsRes.success && donationsRes.data) {
+        const donationsList = donationsRes.data.donations || donationsRes.data || [];
+        setDonations(Array.isArray(donationsList) ? donationsList : []);
+      } else {
+        setDonations([]);
       }
     } catch (err) {
       console.error("Failed to load request details:", err);
@@ -152,7 +165,11 @@ export default function BloodRequestDetailPage({
 
   // Format clean data
   const unitsReq = Number(request.units_required || request.units || 1);
-  const unitsFulfilled = Number(request.fulfilled_units || 0);
+  const completedDonationsCount = donations.filter((d: any) => d.status === "completed").length;
+  // If donor records exist, keep progress in sync with the completed donors list
+  const unitsFulfilled = donations.length > 0
+    ? completedDonationsCount
+    : Number(request.fulfilled_units || 0);
   const unitsRemaining = Math.max(0, unitsReq - unitsFulfilled);
   const progressPercent = Math.min(100, Math.round((unitsFulfilled / unitsReq) * 100));
 
@@ -431,6 +448,103 @@ export default function BloodRequestDetailPage({
             </span>
             <span className="font-semibold text-slate-600">Target: {unitsReq} units</span>
           </div>
+        </div>
+
+        {/* Donors / Fulfilled By Section */}
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-2xs space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+            <h3 className="font-bold text-sm text-slate-900 flex items-center gap-2">
+              <Users className="w-4 h-4 text-[#E53935]" />
+              Donors & Respondents
+            </h3>
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+              {donations.length} Response{donations.length !== 1 ? "s" : ""}
+            </span>
+          </div>
+
+          {donations.length === 0 ? (
+            <div className="text-center py-8">
+              <HeartHandshake className="w-8 h-8 text-slate-200 mx-auto mb-2" />
+              <p className="text-sm font-semibold text-slate-400">No donor responses yet</p>
+              <p className="text-xs text-slate-400 mt-1">
+                Donors will appear here once they accept this blood request from the mobile app.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              {donations.map((donation: any, idx: number) => {
+                const donor = donation.donor || donation.user || {};
+                const donorName = donor.full_name || donor.name || `Donor ${idx + 1}`;
+                const donorPhone = donor.phone || null;
+                const donorBlood = donor.blood_group || "—";
+                const donorCity = donor.city || "—";
+                const donorAvatar = donor.profile_image || null;
+                const donationStatus = (donation.status || "intent").toLowerCase();
+                const donationDate = donation.created_at
+                  ? new Date(donation.created_at).toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "short",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : "";
+
+                const statusColors: Record<string, string> = {
+                  intent: "bg-blue-50 text-blue-700 border-blue-200",
+                  confirmed: "bg-amber-50 text-amber-700 border-amber-200",
+                  completed: "bg-emerald-50 text-emerald-700 border-emerald-200",
+                  cancelled: "bg-slate-100 text-slate-500 border-slate-200",
+                };
+
+                return (
+                  <div
+                    key={donation.id || idx}
+                    className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-100 hover:bg-slate-50 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      {donorAvatar ? (
+                        <img
+                          src={donorAvatar}
+                          alt={donorName}
+                          className="w-9 h-9 rounded-full object-cover border-2 border-white shadow-sm"
+                        />
+                      ) : (
+                        <div className="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 text-xs font-bold border-2 border-white shadow-sm">
+                          {donorName.charAt(0).toUpperCase()}
+                        </div>
+                      )}
+                      <div>
+                        <div className="font-bold text-sm text-slate-900">{donorName}</div>
+                        <div className="text-[11px] text-slate-400 font-medium flex items-center gap-2 mt-0.5">
+                          <span className="font-semibold text-[#E53935]">{donorBlood}</span>
+                          {donorCity !== "—" && (
+                            <>
+                              <span className="text-slate-300">•</span>
+                              <span>{donorCity}</span>
+                            </>
+                          )}
+                          {donationDate && (
+                            <>
+                              <span className="text-slate-300">•</span>
+                              <span>{donationDate}</span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <span
+                      className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wide border capitalize ${
+                        statusColors[donationStatus] || statusColors.intent
+                      }`}
+                    >
+                      {donationStatus}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
 
         {/* Core Intelligence Grid: 2 Columns */}
