@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001").replace(/\/+$/, "");
 
 function getAuthToken(): string | null {
   if (typeof window === "undefined") return null;
@@ -120,9 +120,6 @@ export const api = {
       body: JSON.stringify({ status }),
     });
   },
-
-  // Support FAQs
-  
   // Moderation & Reports Center
   getReports: async (params?: {
     status?: string;
