@@ -1,4 +1,4 @@
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001").replace(/\/+$/, "");
+const API_BASE_URL = "https://life-link-backend-production-58a8.up.railway.app";
 
 function getAuthToken(): string | null {
   if (typeof window === "undefined") return null;
