@@ -10,6 +10,7 @@ import { UserAvatar } from "@/components/UserAvatar";
 import { api } from "@/lib/api";
 import { resolveCityFromItem, resolveRequestStatus } from "@/lib/cityUtils";
 import CitiesData from "@/data/cities.json";
+import { downloadCSV, generateRequestsCSV } from "@/lib/exportUtils";
 import {
   Search,
   MapPin,
@@ -25,6 +26,7 @@ import {
   Sparkles,
   X,
   Users,
+  Download,
 } from "lucide-react";
 
 const BLOOD_GROUPS = ["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-"];
@@ -456,9 +458,18 @@ export default function BloodRequestsPage() {
                 Showing {filteredRequests.length} of {cleanedRequests.length} case records
               </p>
             </div>
-            <span className="text-[11px] font-semibold text-slate-400">
-              Click any row to open the complete clinical case command center
-            </span>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => {
+                  const csv = generateRequestsCSV(filteredRequests);
+                  downloadCSV(`lifelink_blood_requests_${new Date().toISOString().split("T")[0]}.csv`, csv);
+                }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer shrink-0"
+              >
+                <Download className="w-3.5 h-3.5 text-emerald-600" />
+                Export Cases (CSV)
+              </button>
+            </div>
           </div>
 
           <div className="overflow-x-auto">

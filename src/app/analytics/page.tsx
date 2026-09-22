@@ -4,6 +4,15 @@ import React, { useEffect, useState, useMemo } from "react";
 import { Header } from "@/components/Header";
 import { api } from "@/lib/api";
 import { getCityNameById } from "@/lib/cityUtils";
+import { PrintReportView } from "@/components/PrintReportView";
+import {
+  downloadCSV,
+  generateMasterAuditCSV,
+  generateUsersCSV,
+  generateRequestsCSV,
+  generateDonationsCSV,
+  generateCityDistributionCSV,
+} from "@/lib/exportUtils";
 import {
   BarChart3,
   TrendingUp,
@@ -15,6 +24,12 @@ import {
   Printer,
   Activity,
   AlertCircle,
+  FileSpreadsheet,
+  FileText,
+  X,
+  Eye,
+  Layers,
+  ChevronDown,
 } from "lucide-react";
 
 const TREND_COLORS = {
@@ -28,6 +43,11 @@ export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true);
   const [trends, setTrends] = useState<any[]>([]);
   const [cities, setCities] = useState<any[]>([]);
+  const [rawRequests, setRawRequests] = useState<any[]>([]);
+  const [rawUsers, setRawUsers] = useState<any[]>([]);
+  const [rawDonations, setRawDonations] = useState<any[]>([]);
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [showPrintPreview, setShowPrintPreview] = useState(false);
 
   const fetchAnalytics = async () => {
     setLoading(true);
@@ -52,6 +72,10 @@ export default function AnalyticsPage() {
         donRes.success && donRes.data
           ? (donRes.data.donations || donRes.data || [])
           : [];
+
+      setRawRequests(requests);
+      setRawUsers(users);
+      setRawDonations(donations);
 
       // ─── 1. 100% Real City Distribution ───
       const cityMap: {
@@ -231,22 +255,44 @@ export default function AnalyticsPage() {
     return Math.max(...cities.map((c) => c.requests), 1);
   }, [cities]);
 
-  // CSV Export
-  const handleExportCSV = () => {
-    const headers = ["Month,Year,Requests,Donations,Fulfilled,Critical"];
-    const rows = trends.map((t) => `${t.month},${t.year},${t.requests},${t.donations},${t.fulfilled},${t.critical}`);
-
-    const cityHeaders = ["\nCity,Requests,Donors,Fulfilled"];
-    const cityRows = cities.map((c) => `${c.city},${c.requests},${c.donors},${c.fulfilled}`);
-
-    const csv = [...headers, ...rows, ...cityHeaders, ...cityRows].join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `lifelink_analytics_${new Date().toISOString().split("T")[0]}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
+  // Structured Multi-Dataset Export
+  const handleExport = (type: "master" | "users" | "requests" | "donations" | "cities") => {
+    const today = new Date().toISOString().split("T")[0];
+    switch (type) {
+      case "master": {
+        const content = generateMasterAuditCSV({
+          kpis,
+          trends,
+          cities,
+          users: rawUsers,
+          requests: rawRequests,
+          donations: rawDonations,
+        });
+        downloadCSV(`lifelink_master_audit_${today}.csv`, content);
+        break;
+      }
+      case "users": {
+        const content = generateUsersCSV(rawUsers);
+        downloadCSV(`lifelink_users_directory_${today}.csv`, content);
+        break;
+      }
+      case "requests": {
+        const content = generateRequestsCSV(rawRequests);
+        downloadCSV(`lifelink_blood_requests_${today}.csv`, content);
+        break;
+      }
+      case "donations": {
+        const content = generateDonationsCSV(rawDonations);
+        downloadCSV(`lifelink_donations_history_${today}.csv`, content);
+        break;
+      }
+      case "cities": {
+        const content = generateCityDistributionCSV(cities);
+        downloadCSV(`lifelink_city_distribution_${today}.csv`, content);
+        break;
+      }
+    }
+    setShowExportModal(false);
   };
 
   // Print / PDF
@@ -294,19 +340,30 @@ export default function AnalyticsPage() {
 
             <div className="shrink-0 flex items-center gap-3">
               <button
-                onClick={handleExportCSV}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all border border-white/10 cursor-pointer"
+                onClick={() => setShowExportModal(true)}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold transition-all border border-white/10 cursor-pointer shadow-xs"
               >
-                <Download className="w-3.5 h-3.5" />
-                <span>Export CSV</span>
+                <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Export Excel / CSV</span>
+                <ChevronDown className="w-3 h-3 text-white/60" />
               </button>
-              <button
-                onClick={handlePrint}
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#e53935] hover:bg-[#d32f2f] text-white text-xs font-bold transition-all shadow-lg cursor-pointer"
-              >
-                <Printer className="w-3.5 h-3.5" />
-                <span>Print / PDF</span>
-              </button>
+              <div className="flex items-center gap-1.5 bg-[#e53935] rounded-xl p-0.5 shadow-lg">
+                <button
+                  onClick={handlePrint}
+                  className="inline-flex items-center gap-2 px-3.5 py-2 rounded-lg hover:bg-red-700 text-white text-xs font-bold transition-all cursor-pointer"
+                  title="Direct Print or Save as PDF"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>Print / PDF</span>
+                </button>
+                <button
+                  onClick={() => setShowPrintPreview(true)}
+                  className="px-2.5 py-2 rounded-lg hover:bg-red-700 text-white/90 hover:text-white text-xs font-bold transition-all cursor-pointer border-l border-red-400/40"
+                  title="Preview Official Audit Document"
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                </button>
+              </div>
             </div>
           </div>
           <div className="absolute -top-20 -right-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
@@ -540,11 +597,11 @@ export default function AnalyticsPage() {
               </p>
             </div>
             <button
-              onClick={handleExportCSV}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
+              onClick={() => setShowExportModal(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
             >
-              <Download className="w-3 h-3" />
-              Download CSV
+              <Download className="w-3 h-3 text-emerald-600" />
+              Export Datasets
             </button>
           </div>
           <div className="overflow-x-auto">
@@ -598,6 +655,168 @@ export default function AnalyticsPage() {
           </div>
         </div>
       </div>
+      {/* ─── OFFICIAL PRINTABLE AUDIT REPORT (Visible only on print or preview) ─── */}
+      <PrintReportView
+        kpis={kpis}
+        cities={cities}
+        requests={rawRequests}
+        users={rawUsers}
+        donations={rawDonations}
+        previewMode={showPrintPreview}
+        onClosePreview={() => setShowPrintPreview(false)}
+      />
+
+      {/* ─── EXPORT OPTIONS MODAL ─── */}
+      {showExportModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs animate-fade-in no-print">
+          <div className="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl border border-slate-100">
+            <div className="p-6 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold">
+                  <FileSpreadsheet className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-extrabold text-slate-900">
+                    Export System Intelligence Records
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-0.5">
+                    Select a structured dataset to download in Excel-ready CSV format
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowExportModal(false)}
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-6 space-y-3">
+              {/* Option 1: Master Report */}
+              <button
+                onClick={() => handleExport("master")}
+                className="w-full text-left p-4 rounded-2xl border-2 border-emerald-500/30 bg-emerald-50/40 hover:bg-emerald-50/80 transition-all cursor-pointer group flex items-start justify-between"
+              >
+                <div className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                    <Layers className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-extrabold text-slate-900 text-sm">
+                        Comprehensive Master Audit Report
+                      </span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                        Recommended
+                      </span>
+                    </div>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">
+                      Complete multi-section executive workbook including Platform KPIs, Regional
+                      Demand, Users Directory ({rawUsers.length}), Blood Requests ({rawRequests.length}), and Donations.
+                    </p>
+                  </div>
+                </div>
+                <Download className="w-4 h-4 text-emerald-600 group-hover:translate-x-0.5 transition-transform shrink-0 mt-1" />
+              </button>
+
+              {/* Option 2: Users & Donors */}
+              <button
+                onClick={() => handleExport("users")}
+                className="w-full text-left p-3.5 rounded-2xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer group flex items-center justify-between"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                    <Users className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-slate-800 text-xs">
+                      Registered Donors & Users Registry
+                    </div>
+                    <div className="text-[11px] text-slate-400">
+                      {rawUsers.length} profiles with names, blood types, cities, contacts, and availability
+                    </div>
+                  </div>
+                </div>
+                <Download className="w-4 h-4 text-slate-400 group-hover:text-slate-700 transition-colors" />
+              </button>
+
+              {/* Option 3: Blood Requests */}
+              <button
+                onClick={() => handleExport("requests")}
+                className="w-full text-left p-3.5 rounded-2xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer group flex items-center justify-between"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-red-50 text-[#e53935] flex items-center justify-center shrink-0">
+                    <Droplet className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-slate-800 text-xs">
+                      Clinical Blood Requests Registry
+                    </div>
+                    <div className="text-[11px] text-slate-400">
+                      {rawRequests.length} emergency requests with patient details, urgency, hospital, and status
+                    </div>
+                  </div>
+                </div>
+                <Download className="w-4 h-4 text-slate-400 group-hover:text-slate-700 transition-colors" />
+              </button>
+
+              {/* Option 4: Donations History */}
+              <button
+                onClick={() => handleExport("donations")}
+                className="w-full text-left p-3.5 rounded-2xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer group flex items-center justify-between"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
+                    <CheckCircle2 className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-slate-800 text-xs">
+                      Verified Donations Audit Log
+                    </div>
+                    <div className="text-[11px] text-slate-400">
+                      {rawDonations.length} records matching donors with patient hospital cases
+                    </div>
+                  </div>
+                </div>
+                <Download className="w-4 h-4 text-slate-400 group-hover:text-slate-700 transition-colors" />
+              </button>
+
+              {/* Option 5: City Distribution */}
+              <button
+                onClick={() => handleExport("cities")}
+                className="w-full text-left p-3.5 rounded-2xl border border-slate-200 hover:border-slate-300 hover:bg-slate-50 transition-all cursor-pointer group flex items-center justify-between"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                    <MapPin className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-slate-800 text-xs">
+                      Regional Supply & Demand Breakdown
+                    </div>
+                    <div className="text-[11px] text-slate-400">
+                      {cities.length} cities with requests volume, donor counts, and fulfillment ratios
+                    </div>
+                  </div>
+                </div>
+                <Download className="w-4 h-4 text-slate-400 group-hover:text-slate-700 transition-colors" />
+              </button>
+            </div>
+
+            <div className="p-4 px-6 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between text-[11px] text-slate-500">
+              <span>Formatted with UTF-8 BOM for Microsoft Excel & Google Sheets</span>
+              <button
+                onClick={() => setShowExportModal(false)}
+                className="font-bold text-slate-700 hover:text-slate-900 cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
