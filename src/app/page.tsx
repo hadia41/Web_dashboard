@@ -7,7 +7,7 @@ import { Header } from "@/components/Header";
 import { BloodBadge } from "@/components/BloodBadge";
 import { StatusPill } from "@/components/StatusPill";
 import { api } from "@/lib/api";
-import { resolveCityFromItem } from "@/lib/cityUtils";
+import { resolveCityFromItem, resolveRequestStatus } from "@/lib/cityUtils";
 import {
   Activity,
   AlertCircle,
@@ -40,7 +40,7 @@ export default function OverviewPage() {
     setLoading(true);
     try {
       const [feedRes, statsRes] = await Promise.all([
-        api.getFeed({ limit: 50 }),
+        api.getFeed({ status: "all", limit: 50 }),
         api.getDashboardStats(),
       ]);
 
@@ -76,7 +76,7 @@ export default function OverviewPage() {
       const city = resolveCityFromItem(r);
       const group = r.blood_group || "O+";
       const urgency = (r.urgency || "normal").toLowerCase();
-      const status = (r.status || "open").toLowerCase();
+      const status = resolveRequestStatus(r);
 
       return {
         ...r,
@@ -99,9 +99,10 @@ export default function OverviewPage() {
     const fulfillmentRate = totalDemanded > 0 ? Math.round((totalFulfilled / totalDemanded) * 100) : 0;
     const criticalCount = cleanedRequests.filter((r) => r.urgencyClean === "critical" || r.urgencyClean === "high").length;
     const openCount = cleanedRequests.filter((r) => r.statusClean === "open").length;
+    const expiredCount = cleanedRequests.filter((r) => r.statusClean === "expired").length;
     const fulfilledCount = cleanedRequests.filter((r) => r.statusClean === "fulfilled").length;
 
-    return { totalDemanded, totalFulfilled, totalDeficit, fulfillmentRate, criticalCount, openCount, fulfilledCount };
+    return { totalDemanded, totalFulfilled, totalDeficit, fulfillmentRate, criticalCount, openCount, expiredCount, fulfilledCount };
   }, [cleanedRequests]);
 
   // Blood group summary for the donut
@@ -207,8 +208,8 @@ export default function OverviewPage() {
           {[
             {
               label: "Active Cases",
-              value: dashboardStats?.active_requests ?? cleanedRequests.length,
-              sub: `${calculatedTotals.criticalCount} urgent`,
+              value: calculatedTotals.openCount,
+              sub: `${calculatedTotals.criticalCount} urgent • ${calculatedTotals.expiredCount} expired`,
               icon: <Activity className="w-5 h-5" />,
               accent: "#e53935",
               bgAccent: "#fef2f2",

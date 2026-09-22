@@ -35,8 +35,8 @@ export const getCityNameById = (
 
   const city = CitiesData.cities.find(
     (c) =>
-      c.id === rawStr ||
-      c.id === normalized ||
+      String(c.id) === rawStr ||
+      String(c.id) === normalized ||
       c.name.en.toLowerCase() === normalized ||
       c.name.en.toLowerCase() === rawStr.toLowerCase() ||
       c.name.ur === rawStr
@@ -45,6 +45,11 @@ export const getCityNameById = (
   if (city) {
     const l = lang === "ur" ? "ur" : "en";
     return city.name[l] || city.name.en || capitalizeWords(normalized);
+  }
+
+  // If input was numeric digits and not found, do not return raw numbers as a city
+  if (/^\d+$/.test(rawStr)) {
+    return "Other";
   }
 
   return capitalizeWords(normalized) || "Pakistan";
@@ -105,4 +110,29 @@ export const getProvinceByCityId = (cityIdOrName?: string | number | null): stri
   );
 
   return city?.province || "";
+};
+
+/**
+ * Resolves the true operational status of a blood request.
+ * Automatically marks requests as 'expired' if their required_date is in the past.
+ */
+export const resolveRequestStatus = (
+  item?: any
+): "open" | "expired" | "fulfilled" | "cancelled" => {
+  if (!item) return "open";
+  const rawStatus = (item.status || "open").toLowerCase().trim();
+
+  if (rawStatus === "fulfilled" || rawStatus === "completed") return "fulfilled";
+  if (rawStatus === "cancelled") return "cancelled";
+  if (rawStatus === "expired" || item.is_expired === true) return "expired";
+
+  // Check if required_date has passed
+  if (item.required_date) {
+    const reqDate = new Date(item.required_date);
+    if (!isNaN(reqDate.getTime()) && reqDate.getTime() < Date.now()) {
+      return "expired";
+    }
+  }
+
+  return "open";
 };

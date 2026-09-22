@@ -1,4 +1,6 @@
-const API_BASE_URL = "https://life-link-backend-production-58a8.up.railway.app";
+const API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL?.replace(/\/+$/, "") ||
+  "https://life-link-backend-production-58a8.up.railway.app";
 
 function getAuthToken(): string | null {
   if (typeof window === "undefined") return null;
@@ -67,6 +69,7 @@ export async function fetchFromApi<T>(
 export const api = {
   // Blood Requests Feed
   getFeed: async (params?: {
+    status?: string;
     blood_group?: string;
     urgency?: string;
     page?: number;
@@ -74,12 +77,19 @@ export const api = {
     search?: string;
   }) => {
     const query = new URLSearchParams();
+    if (params?.status && params.status !== "default") {
+      query.set("status", params.status);
+    }
     if (params?.blood_group && params.blood_group !== "all")
       query.set("blood_group", params.blood_group);
     if (params?.urgency && params.urgency !== "all")
       query.set("urgency", params.urgency);
     if (params?.page) query.set("page", String(params.page));
-    if (params?.limit) query.set("limit", String(params.limit || 20));
+    if (params?.limit) {
+      // Backend validates: limit must not be greater than 50
+      const safeLimit = Math.min(Math.max(Number(params.limit) || 20, 1), 50);
+      query.set("limit", String(safeLimit));
+    }
     if (params?.search) query.set("search", params.search);
 
     const qs = query.toString();
@@ -120,6 +130,55 @@ export const api = {
       body: JSON.stringify({ status }),
     });
   },
+
+  // User Management (FR-9 / UC-9)
+  getUsers: async (params?: {
+    search?: string;
+    blood_group?: string;
+    city_id?: string;
+    is_available?: boolean;
+    page?: number;
+    limit?: number;
+  }) => {
+    const query = new URLSearchParams();
+    if (params?.search) query.set("search", params.search);
+    if (params?.blood_group && params.blood_group !== "all") query.set("blood_group", params.blood_group);
+    if (params?.city_id && params.city_id !== "all") query.set("city_id", params.city_id);
+    if (params?.is_available !== undefined) query.set("is_available", String(params.is_available));
+    if (params?.page) query.set("page", String(params.page));
+    if (params?.limit) query.set("limit", String(params.limit));
+    const qs = query.toString();
+    return fetchFromApi<any>(`/profile/donors${qs ? "?" + qs : ""}`);
+  },
+
+  toggleUserAvailability: async (id: string, is_available: boolean) => {
+    return fetchFromApi<any>(`/profile/${id}/availability`, {
+      method: "PATCH",
+      body: JSON.stringify({ is_available }),
+    });
+  },
+
+  // Donation Records & Audit Trail (UC-10)
+  getDonationHistory: async (params?: {
+    page?: number;
+    limit?: number;
+    status?: string;
+    search?: string;
+  }) => {
+    const query = new URLSearchParams();
+    if (params?.page) query.set("page", String(params.page));
+    if (params?.limit) query.set("limit", String(params.limit));
+    if (params?.status && params.status !== "all") query.set("status", params.status);
+    if (params?.search) query.set("search", params.search);
+    const qs = query.toString();
+    return fetchFromApi<any>(`/donations/history${qs ? "?" + qs : ""}`);
+  },
+
+  // Analytics & Trends (UC-6)
+  getAnalyticsTrends: async () => {
+    return fetchFromApi<any>("/analytics/trends");
+  },
+
   // Moderation & Reports Center
   getReports: async (params?: {
     status?: string;

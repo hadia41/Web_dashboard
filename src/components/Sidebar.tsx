@@ -8,6 +8,9 @@ import { useAuth } from "@/lib/auth";
 import {
   LayoutDashboard,
   HeartHandshake,
+  Users,
+  History,
+  BarChart3,
   ShieldAlert,
   Radio,
   LogOut,
@@ -20,6 +23,9 @@ export const Sidebar: React.FC = () => {
   const navItems = [
     { name: "Overview", href: "/", icon: LayoutDashboard },
     { name: "Blood Requests", href: "/requests", icon: HeartHandshake },
+    { name: "User Directory", href: "/users", icon: Users },
+    { name: "Donation Records", href: "/donations", icon: History },
+    { name: "Analytics & Reports", href: "/analytics", icon: BarChart3 },
     { name: "Reports & Moderation", href: "/support", icon: ShieldAlert },
     { name: "Broadcast Alerts", href: "/broadcast", icon: Radio },
   ];

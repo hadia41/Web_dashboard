@@ -6,8 +6,9 @@ import { useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { BloodBadge } from "@/components/BloodBadge";
 import { StatusPill } from "@/components/StatusPill";
+import { UserAvatar } from "@/components/UserAvatar";
 import { api } from "@/lib/api";
-import { resolveCityFromItem } from "@/lib/cityUtils";
+import { resolveCityFromItem, resolveRequestStatus } from "@/lib/cityUtils";
 import CitiesData from "@/data/cities.json";
 import {
   Search,
@@ -32,6 +33,8 @@ export default function BloodRequestsPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [requests, setRequests] = useState<any[]>([]);
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [statusCounts, setStatusCounts] = useState<{ [key: string]: number }>({});
   const [search, setSearch] = useState("");
   const [selectedGroup, setSelectedGroup] = useState("all");
   const [selectedUrgency, setSelectedUrgency] = useState("all");
@@ -40,12 +43,22 @@ export default function BloodRequestsPage() {
   const fetchRequests = async () => {
     setLoading(true);
     const res = await api.getFeed({
-      limit: 100,
+      status: "all",
+      limit: 50,
     });
 
     if (res.success && res.data) {
       const list = res.data.requests || res.data || [];
       setRequests(Array.isArray(list) ? list : []);
+      const counts: { [key: string]: number } = { all: list.length, open: 0, expired: 0, fulfilled: 0, cancelled: 0 };
+      list.forEach((item: any) => {
+        const st = resolveRequestStatus(item);
+        if (st === "fulfilled") counts.fulfilled++;
+        else if (st === "cancelled") counts.cancelled++;
+        else if (st === "expired") counts.expired++;
+        else counts.open++;
+      });
+      setStatusCounts(counts);
     } else {
       setRequests([]);
     }
@@ -56,7 +69,7 @@ export default function BloodRequestsPage() {
     fetchRequests();
   }, []);
 
-  // Clean and enrich requests
+  // Clean and enrich requests with true effective status
   const cleanedRequests = useMemo(() => {
     return requests.map((item) => {
       const bloodGroup = (item.blood_group || item.bloodType || "O+").toUpperCase();
@@ -66,7 +79,7 @@ export default function BloodRequestsPage() {
       const unitsDeficit = Math.max(0, unitsReq - unitsFulfilled);
       const progressPercent = Math.min(100, Math.round((unitsFulfilled / unitsReq) * 100));
       const urgency = (item.urgency || "normal").toLowerCase();
-      const status = (item.status || "open").toLowerCase();
+      const status = resolveRequestStatus(item);
       const patientName = item.patient_name || item.patientName || "Emergency Patient";
       const hospitalName = item.hospital_name || item.hospital || "Medical Facility";
 
@@ -121,6 +134,7 @@ export default function BloodRequestsPage() {
   // Filtered requests based on active filters
   const filteredRequests = useMemo(() => {
     return cleanedRequests.filter((item) => {
+      if (selectedStatus !== "all" && item.status !== selectedStatus) return false;
       if (selectedGroup !== "all" && item.bloodGroup !== selectedGroup) return false;
       if (selectedUrgency !== "all" && item.urgency !== selectedUrgency) return false;
       if (selectedCity !== "all" && item.city !== selectedCity) return false;
@@ -137,7 +151,7 @@ export default function BloodRequestsPage() {
       }
       return true;
     });
-  }, [cleanedRequests, selectedGroup, selectedUrgency, selectedCity, search]);
+  }, [cleanedRequests, selectedStatus, selectedGroup, selectedUrgency, selectedCity, search]);
 
   const hasActiveFilters =
     search.trim() !== "" ||
@@ -320,6 +334,43 @@ export default function BloodRequestsPage() {
           </div>
         </div>
 
+        {/* ─── STATUS FILTER TABS ─── */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none animate-fade-in-up" style={{ animationDelay: "0.18s" }}>
+          {[
+            { label: "All Records", value: "all", count: statusCounts.all },
+            { label: "Active / Open", value: "open", count: statusCounts.open },
+            { label: "Expired", value: "expired", count: statusCounts.expired },
+            { label: "Fulfilled", value: "fulfilled", count: statusCounts.fulfilled },
+            { label: "Cancelled", value: "cancelled", count: statusCounts.cancelled },
+          ].map((tab) => {
+            const isSelected = selectedStatus === tab.value;
+            return (
+              <button
+                key={tab.value}
+                onClick={() => setSelectedStatus(tab.value)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+                  isSelected
+                    ? "bg-slate-900 text-white shadow-sm"
+                    : "bg-white text-slate-600 hover:bg-slate-50 border border-slate-200/80"
+                }`}
+              >
+                <span>{tab.label}</span>
+                {tab.count !== undefined && (
+                  <span
+                    className={`text-[10px] px-1.5 py-0.5 rounded-full ${
+                      isSelected
+                        ? "bg-white/20 text-white"
+                        : "bg-slate-100 text-slate-500 font-semibold"
+                    }`}
+                  >
+                    {tab.count}
+                  </span>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
         {/* ─── ADVANCED SEARCH & MULTI-FILTER CONSOLE ─── */}
         <div className="bg-white rounded-2xl border border-slate-100 p-4 shadow-xs flex flex-col md:flex-row items-center justify-between gap-4 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
           {/* Search Input */}
@@ -469,17 +520,11 @@ export default function BloodRequestsPage() {
                         {/* Patient & Info */}
                         <td className="py-4 px-5">
                           <div className="flex items-center gap-3">
-                            {avatar ? (
-                              <img
-                                src={avatar}
-                                alt={item.patientName}
-                                className="w-8 h-8 rounded-full object-cover border border-slate-200"
-                              />
-                            ) : (
-                              <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-black text-[11px] text-slate-600">
-                                {item.patientName.charAt(0).toUpperCase()}
-                              </div>
-                            )}
+                            <UserAvatar
+                              src={avatar}
+                              name={item.patientName}
+                              size="sm"
+                            />
                             <div>
                               <div className="font-extrabold text-slate-900 group-hover:text-[#e53935] transition-colors text-xs">
                                 {item.patientName}

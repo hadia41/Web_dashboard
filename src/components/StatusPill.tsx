@@ -20,11 +20,13 @@ export const StatusPill: React.FC<StatusPillProps> = ({ status, type = "status" 
     }
   } else {
     if (normalized === "fulfilled" || normalized === "completed" || normalized === "active" || normalized === "eligible") {
-      colorClasses = "bg-emerald-500/15 text-emerald-400 border-emerald-500/30 dot-emerald-500";
+      colorClasses = "bg-emerald-500/15 text-emerald-600 border-emerald-500/30 dot-emerald-500";
     } else if (normalized === "open" || normalized === "pending") {
-      colorClasses = "bg-amber-500/15 text-amber-400 border-amber-500/30 dot-amber-500";
-    } else if (normalized === "expired" || normalized === "cancelled" || normalized === "cooldown") {
-      colorClasses = "bg-slate-800/80 text-slate-400 border-white/10 dot-slate-500";
+      colorClasses = "bg-amber-500/15 text-amber-600 border-amber-500/30 dot-amber-500";
+    } else if (normalized === "expired") {
+      colorClasses = "bg-slate-100 text-slate-500 border-slate-200 dot-slate-400";
+    } else if (normalized === "cancelled" || normalized === "cooldown") {
+      colorClasses = "bg-rose-50 text-rose-600 border-rose-200 dot-rose-400";
     }
   }
 

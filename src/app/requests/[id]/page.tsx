@@ -6,8 +6,9 @@ import { useRouter } from "next/navigation";
 import { Header } from "@/components/Header";
 import { BloodBadge } from "@/components/BloodBadge";
 import { StatusPill } from "@/components/StatusPill";
+import { UserAvatar } from "@/components/UserAvatar";
 import { api } from "@/lib/api";
-import { resolveCityFromItem, getProvinceByCityId } from "@/lib/cityUtils";
+import { resolveCityFromItem, getProvinceByCityId, resolveRequestStatus } from "@/lib/cityUtils";
 import {
   ArrowLeft,
   Building2,
@@ -286,7 +287,7 @@ export default function BloodRequestDetailPage({
                     {patientName}
                   </h1>
                   <StatusPill status={request.urgency || "normal"} type="urgency" />
-                  <StatusPill status={request.status || "open"} type="status" />
+                  <StatusPill status={resolveRequestStatus(request)} type="status" />
                 </div>
 
                 <div className="flex flex-wrap items-center gap-y-1 gap-x-3 text-xs text-slate-600">
@@ -502,17 +503,12 @@ export default function BloodRequestDetailPage({
                     className="flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/80 border border-slate-100 hover:bg-slate-50 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      {donorAvatar ? (
-                        <img
-                          src={donorAvatar}
-                          alt={donorName}
-                          className="w-9 h-9 rounded-full object-cover border-2 border-white shadow-sm"
-                        />
-                      ) : (
-                        <div className="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 text-xs font-bold border-2 border-white shadow-sm">
-                          {donorName.charAt(0).toUpperCase()}
-                        </div>
-                      )}
+                      <UserAvatar
+                        src={donorAvatar}
+                        name={donorName}
+                        size="md"
+                        className="border-2 border-white shadow-sm"
+                      />
                       <div>
                         <div className="font-bold text-sm text-slate-900">{donorName}</div>
                         <div className="text-[11px] text-slate-400 font-medium flex items-center gap-2 mt-0.5">
@@ -711,17 +707,12 @@ export default function BloodRequestDetailPage({
               </h3>
 
               <div className="flex items-center gap-3.5">
-                {request.requester?.profile_image ? (
-                  <img
-                    src={request.requester.profile_image}
-                    alt={requesterName}
-                    className="w-12 h-12 rounded-2xl object-cover border border-slate-200 shrink-0 shadow-2xs"
-                  />
-                ) : (
-                  <div className="w-12 h-12 rounded-2xl bg-red-100 border border-red-200 text-[#E53935] flex items-center justify-center font-black text-sm shrink-0 shadow-2xs">
-                    {requesterName.slice(0, 2).toUpperCase()}
-                  </div>
-                )}
+                <UserAvatar
+                  src={request.requester?.profile_image}
+                  name={requesterName}
+                  size="lg"
+                  className="rounded-2xl shrink-0 shadow-2xs"
+                />
                 <div className="min-w-0 flex-1">
                   <h4 className="font-black text-slate-900 text-sm truncate flex items-center gap-1">
                     {requesterName}
