@@ -6,6 +6,7 @@ import { BloodBadge } from "@/components/BloodBadge";
 import { UserAvatar } from "@/components/UserAvatar";
 import { api } from "@/lib/api";
 import { resolveCityFromItem } from "@/lib/cityUtils";
+import { downloadCSV, generateUsersCSV } from "@/lib/exportUtils";
 import {
   Users,
   UserCheck,
@@ -24,6 +25,7 @@ import {
   Droplet,
   Heart,
   UserX,
+  Download,
 } from "lucide-react";
 
 const BLOOD_GROUPS = ["O+", "A+", "B+", "AB+", "O-", "A-", "B-", "AB-"];
@@ -302,6 +304,16 @@ export default function UsersManagementPage() {
                 Showing {filteredUsers.length} of {cleanedUsers.length} registered accounts
               </p>
             </div>
+            <button
+              onClick={() => {
+                const csv = generateUsersCSV(filteredUsers);
+                downloadCSV(`lifelink_users_${new Date().toISOString().split("T")[0]}.csv`, csv);
+              }}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer"
+            >
+              <Download className="w-3.5 h-3.5 text-emerald-600" />
+              Export Users (CSV)
+            </button>
           </div>
 
           {loading ? (
