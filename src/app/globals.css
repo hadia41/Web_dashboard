@@ -93,3 +93,51 @@ body {
 .animate-pulse-ring {
   animation: pulseRing 2s infinite;
 }
+
+/* ─── PRINT & PDF DOCUMENT STYLES ─── */
+@media print {
+  /* Hide standard web UI chrome */
+  aside,
+  header,
+  nav,
+  .no-print,
+  button,
+  input,
+  select {
+    display: none !important;
+  }
+
+  /* Reset layout constraints */
+  html, body {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    font-size: 11pt !important;
+  }
+
+  /* Target printable report container */
+  #printable-report {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .printable-document {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  /* Avoid splitting critical sections across pages */
+  .page-break-inside-avoid {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Page margins */
+  @page {
+    margin: 12mm 15mm;
+    size: A4 portrait;
+  }
+}
